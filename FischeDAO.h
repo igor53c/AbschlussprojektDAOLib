@@ -44,6 +44,8 @@ public:
   static bool deleteFischeInAngelplatz(qint64 key);
   static int countFischeInAngelplatz(qint64 key);
 
+  static int countColumns();
+
 private:
   FischeDAO();
 };

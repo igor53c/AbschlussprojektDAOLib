@@ -184,3 +184,15 @@ bool AngelplaetzeDAO::changeNumberFische(const qint64 key, const int value) {
 
   return DAOLib::executeNonQuery(SQL) > 0;
 }
+
+int AngelplaetzeDAO::countColumns() {
+
+  QString SQL = "SELECT COUNT (COLUMN_NAME) AS NUMBER FROM ";
+  SQL += "INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='ANGELPLAETZE'";
+
+  bool OK;
+
+  QVariant count = DAOLib::executeScalar(SQL, OK);
+
+  return OK ? count.toInt() : 0;
+}

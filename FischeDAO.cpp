@@ -197,8 +197,6 @@ QStringList FischeDAO::readFischarten() {
 
   QStringList retValue;
 
-  retValue.push_back("Fischarten");
-
   if(getRowCount() < 1)
       return retValue;
 
@@ -271,4 +269,16 @@ int FischeDAO::countFischeInAngelplatz(qint64 key) {
   QVariant count = DAOLib::executeScalar(SQL, OK);
 
   return OK ? count.toInt() : 0;
+}
+
+int FischeDAO::countColumns()
+{
+    QString SQL = "SELECT COUNT (COLUMN_NAME) AS NUMBER FROM ";
+    SQL += "INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='FISCHE'";
+
+    bool OK;
+
+    QVariant count = DAOLib::executeScalar(SQL, OK);
+
+    return OK ? count.toInt() : 0;
 }

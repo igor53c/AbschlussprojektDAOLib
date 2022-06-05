@@ -35,6 +35,8 @@ public:
 
   static bool changeNumberFische(const qint64 key, const int value);
 
+  static int countColumns();
+
 private:
   AngelplaetzeDAO();
 };
