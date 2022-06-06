@@ -21,11 +21,9 @@ public:
 
   static void deleteTable();
 
-  static Fisch *readFisch(qint64 key);
+  static Fisch *readFisch(const qint64 key);
 
-  static QString readFischAngelplatz(qint64 key);
-
-  static QVector<Fisch *> readFische();
+  static QString readFischAngelplatz(const qint64 key);
 
   static FischeSqlTableModel *
   readFischeIntoTableModel(const QStringList &listNacht,

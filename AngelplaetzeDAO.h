@@ -27,8 +27,6 @@ public:
 
   static QString readAngelplatzPath(const QString &name);
 
-  static QVector<Angelplatz *> readAngelplaetze();
-
   static QSqlTableModel *readAngelplaetzeIntoTableModel();
 
   static bool updateAngelplatz(const qint64 key, const QString &path,

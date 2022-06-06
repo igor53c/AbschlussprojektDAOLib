@@ -41,6 +41,7 @@ QString DAOLib::getDatabaseName() { return dbName; }
 QSqlDatabase DAOLib::getDatabaseConnection() { return dbConn; }
 
 void DAOLib::closeConnection() {
+
   dbConn.close();
 
   serverName = QString();
@@ -49,6 +50,7 @@ void DAOLib::closeConnection() {
 }
 
 int DAOLib::executeNonQuery(const QString &SQL) {
+
   QSqlQuery query = QSqlQuery(dbConn);
 
   int retValue = -1;
@@ -64,6 +66,7 @@ int DAOLib::executeNonQuery(const QString &SQL) {
 }
 
 QVariant DAOLib::executeScalar(const QString &SQL, bool &OK) {
+
   OK = false;
 
   QVariant retValue = 0;
@@ -88,6 +91,7 @@ QVariant DAOLib::executeScalar(const QString &SQL, bool &OK) {
 }
 
 QSqlQuery *DAOLib::executeQuery(const QString &SQL, bool &OK) {
+
   QSqlQuery *query = new QSqlQuery(dbConn);
   OK = query->exec(SQL);
   return query;

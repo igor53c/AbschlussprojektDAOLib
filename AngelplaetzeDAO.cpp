@@ -7,6 +7,7 @@ bool AngelplaetzeDAO::insertAngelplatz(const QString &path, const QString &name,
                                        const QString &plz, const QString &ort,
                                        const QString &land,
                                        const QString &info) {
+
   QString SQL = "INSERT INTO ANGELPLAETZE ";
   SQL += "(PATH, NAME, TYPE, FISCHE, PLZ, ORT, LAND, INFO) ";
   SQL += "VALUES (";
@@ -23,6 +24,7 @@ bool AngelplaetzeDAO::insertAngelplatz(const QString &path, const QString &name,
 }
 
 bool AngelplaetzeDAO::angelplatzExists(const QString &name) {
+
   QString SQL = "SELECT COUNT(*) FROM ANGELPLAETZE ";
   SQL += "WHERE NAME = " + DAOLib::dbString(name);
 
@@ -34,6 +36,7 @@ bool AngelplaetzeDAO::angelplatzExists(const QString &name) {
 }
 
 int AngelplaetzeDAO::getRowCount() {
+
   QString SQL = "SELECT COUNT(*) FROM ANGELPLAETZE ";
 
   bool OK;
@@ -44,14 +47,17 @@ int AngelplaetzeDAO::getRowCount() {
 }
 
 void AngelplaetzeDAO::deleteTable() {
+
   QString SQL = "TRUNCATE TABLE ANGELPLAETZE";
 
   DAOLib::executeNonQuery(SQL);
 }
 
 QSqlTableModel *AngelplaetzeDAO::readAngelplaetzeIntoTableModel() {
+
   QSqlTableModel *tableModel =
       new QSqlTableModel(nullptr, DAOLib::getDatabaseConnection());
+
   tableModel->setTable("Angelplaetze");
 
   // Änderungen der Tabelle werden nur vom Programm mit submitAll() oder
@@ -65,6 +71,7 @@ QSqlTableModel *AngelplaetzeDAO::readAngelplaetzeIntoTableModel() {
 }
 
 Angelplatz *AngelplaetzeDAO::readAngelplatz(const qint64 key) {
+
   Angelplatz *angelplatz = nullptr;
 
   QString SQL =
@@ -121,6 +128,7 @@ QString AngelplaetzeDAO::readAngelplatzName(const qint64 key) {
 }
 
 qint64 AngelplaetzeDAO::readAngelplatzKey(const QString &name) {
+
   QString SQL = "SELECT PRIMARYKEY FROM ANGELPLAETZE ";
   SQL += "WHERE NAME = " + DAOLib::dbString(name);
 
@@ -132,6 +140,7 @@ qint64 AngelplaetzeDAO::readAngelplatzKey(const QString &name) {
 }
 
 QString AngelplaetzeDAO::readAngelplatzPath(const QString &name) {
+
   QString SQL = "SELECT PATH FROM ANGELPLAETZE ";
   SQL += "WHERE NAME = " + DAOLib::dbString(name);
 
@@ -142,55 +151,12 @@ QString AngelplaetzeDAO::readAngelplatzPath(const QString &name) {
   return OK ? path.toString() : QString();
 }
 
-QVector<Angelplatz *> AngelplaetzeDAO::readAngelplaetze() {
-  QVector<Angelplatz *> retValue;
-
-  Angelplatz *angelplatz = nullptr;
-
-  QString SQL = "SELECT * FROM ANGELPLAETZE";
-
-  bool OK;
-
-  QSqlQuery *query = DAOLib::executeQuery(SQL, OK);
-  if (!OK) {
-    delete query;
-
-    return retValue;
-  }
-
-  // Auf den ersten Datensatz setzen (Zugriff mit Primärschlüssel)
-  query->first();
-
-  do {
-    // Erstellen des Objekts Postleitzahl
-    angelplatz = new Angelplatz();
-
-    // Setzen der Werte
-    angelplatz->setPrimaryKey(query->value("PRIMARYKEY").toLongLong());
-    angelplatz->setPath(query->value("PATH").toString());
-    angelplatz->setName(query->value("NAME").toString());
-    angelplatz->setType(query->value("TYPE").toString());
-    angelplatz->setFische(query->value("FISCHE").toInt());
-    angelplatz->setPlz(query->value("PLZ").toString());
-    angelplatz->setOrt(query->value("ORT").toString());
-    angelplatz->setLand(query->value("LAND").toString());
-    angelplatz->setInfo(query->value("INFO").toString());
-
-    retValue.push_back(angelplatz);
-  } while (query->next());
-
-  // Nachdem alle Daten aus der Query übernommen wurden,
-  // das Objekt vom Heap löschen
-  delete query;
-
-  return retValue;
-}
-
 bool AngelplaetzeDAO::updateAngelplatz(const qint64 key, const QString &path,
                                        const QString &name, const QString &type,
                                        const int fische, const QString &plz,
                                        const QString &ort, const QString &land,
                                        const QString &info) {
+
   QString SQL = "UPDATE ANGELPLAETZE ";
   SQL += "SET PATH = " + DAOLib::dbString(path) + ", ";
   SQL += "NAME = " + DAOLib::dbString(name) + ", ";
