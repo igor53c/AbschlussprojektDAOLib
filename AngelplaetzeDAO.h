@@ -19,7 +19,13 @@ public:
 
   static void deleteTable();
 
-  static Angelplatz *readAngelplatz(qint64 key);
+  static Angelplatz *readAngelplatz(const qint64 key);
+
+  static QString readAngelplatzName(const qint64 key);
+
+  static qint64 readAngelplatzKey(const QString &name);
+
+  static QString readAngelplatzPath(const QString &name);
 
   static QVector<Angelplatz *> readAngelplaetze();
 
@@ -33,7 +39,7 @@ public:
 
   static bool deleteAngelplatz(const qint64 key);
 
-  static bool changeNumberFische(const qint64 key, const int value);
+  static bool changeNumberFische(const QString &name, const int value);
 
   static int countColumns();
 

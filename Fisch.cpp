@@ -16,9 +16,9 @@ void Fisch::setName(const QString &value) { name = value; }
 
 QString Fisch::getName() const { return name; }
 
-void Fisch::setAngelplatz(const qint64 value) { angelplatz = value; }
+void Fisch::setAngelplatz(const QString &value) { angelplatz = value; }
 
-qint64 Fisch::getAngelplatz() const { return angelplatz; }
+QString Fisch::getAngelplatz() const { return angelplatz; }
 
 void Fisch::setLaenge(const int value) { laenge = value; }
 
@@ -46,13 +46,13 @@ void Fisch::setLuftdruck(const int value) { luftdruck = value; }
 
 int Fisch::getLuftdruck() const { return luftdruck; }
 
-void Fisch::setIsNacht(const QString& value) { isNacht = value; }
+void Fisch::setIsNacht(const bool value) { isNacht = value; }
 
-QString Fisch::getIsNacht() const { return isNacht; }
+bool Fisch::getIsNacht() const { return isNacht; }
 
-void Fisch::setNiederschlag(const QString &value) { niederschlag = value; }
+void Fisch::setNiederschlag(const int value) { niederschlag = value; }
 
-QString Fisch::getNiederschlag() const { return niederschlag; }
+int Fisch::getNiederschlag() const { return niederschlag; }
 
 void Fisch::setInfo(const QString &value) { info = value; }
 

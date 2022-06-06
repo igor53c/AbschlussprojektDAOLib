@@ -16,8 +16,8 @@ public:
   virtual void setName(const QString &value) = 0;
   virtual QString getName() const = 0;
 
-  virtual void setAngelplatz(const qint64 value) = 0;
-  virtual qint64 getAngelplatz() const = 0;
+  virtual void setAngelplatz(const QString &value) = 0;
+  virtual QString getAngelplatz() const = 0;
 
   virtual void setLaenge(const int value) = 0;
   virtual int getLaenge() const = 0;
@@ -37,11 +37,11 @@ public:
   virtual void setLuftdruck(const int value) = 0;
   virtual int getLuftdruck() const = 0;
 
-  virtual void setIsNacht(const QString& value) = 0;
-  virtual QString getIsNacht() const = 0;
+  virtual void setIsNacht(const bool value) = 0;
+  virtual bool getIsNacht() const = 0;
 
-  virtual void setNiederschlag(const QString &value) = 0;
-  virtual QString getNiederschlag() const = 0;
+  virtual void setNiederschlag(const int value) = 0;
+  virtual int getNiederschlag() const = 0;
 
   virtual void setInfo(const QString &value) = 0;
   virtual QString getInfo() const = 0;

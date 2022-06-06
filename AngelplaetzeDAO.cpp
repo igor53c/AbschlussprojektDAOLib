@@ -64,7 +64,7 @@ QSqlTableModel *AngelplaetzeDAO::readAngelplaetzeIntoTableModel() {
   return tableModel;
 }
 
-Angelplatz *AngelplaetzeDAO::readAngelplatz(qint64 key) {
+Angelplatz *AngelplaetzeDAO::readAngelplatz(const qint64 key) {
   Angelplatz *angelplatz = nullptr;
 
   QString SQL =
@@ -103,6 +103,43 @@ Angelplatz *AngelplaetzeDAO::readAngelplatz(qint64 key) {
   delete query;
 
   return angelplatz;
+}
+
+QString AngelplaetzeDAO::readAngelplatzName(const qint64 key) {
+
+  if (key < 1)
+    return QString();
+
+  QString SQL = "SELECT NAME FROM ANGELPLAETZE ";
+  SQL += "WHERE PRIMARYKEY = " + QString::number(key);
+
+  bool OK;
+
+  QVariant name = DAOLib::executeScalar(SQL, OK);
+
+  return OK ? name.toString() : QString();
+}
+
+qint64 AngelplaetzeDAO::readAngelplatzKey(const QString &name) {
+  QString SQL = "SELECT PRIMARYKEY FROM ANGELPLAETZE ";
+  SQL += "WHERE NAME = " + DAOLib::dbString(name);
+
+  bool OK;
+
+  QVariant key = DAOLib::executeScalar(SQL, OK);
+
+  return OK ? key.toLongLong() : 0;
+}
+
+QString AngelplaetzeDAO::readAngelplatzPath(const QString &name) {
+  QString SQL = "SELECT PATH FROM ANGELPLAETZE ";
+  SQL += "WHERE NAME = " + DAOLib::dbString(name);
+
+  bool OK;
+
+  QVariant path = DAOLib::executeScalar(SQL, OK);
+
+  return OK ? path.toString() : QString();
 }
 
 QVector<Angelplatz *> AngelplaetzeDAO::readAngelplaetze() {
@@ -176,11 +213,11 @@ bool AngelplaetzeDAO::deleteAngelplatz(const qint64 key) {
   return DAOLib::executeNonQuery(SQL) > 0;
 }
 
-bool AngelplaetzeDAO::changeNumberFische(const qint64 key, const int value) {
+bool AngelplaetzeDAO::changeNumberFische(const QString &name, const int value) {
 
   QString SQL = "UPDATE ANGELPLAETZE ";
   SQL += "SET FISCHE = FISCHE + " + QString::number(value);
-  SQL += " WHERE PRIMARYKEY = " + QString::number(key);
+  SQL += " WHERE NAME = " + DAOLib::dbString(name);
 
   return DAOLib::executeNonQuery(SQL) > 0;
 }

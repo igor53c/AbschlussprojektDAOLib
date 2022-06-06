@@ -1,20 +1,21 @@
 #pragma once
 
 #include <QDateTime>
-#include <QSqlTableModel>
 #include <QDebug>
+#include <QSqlTableModel>
 
 #include "DAOLib.h"
 #include "Fisch.h"
+#include "FischeSqlTableModel.h"
 
 class DAOLIB_EXPORT FischeDAO {
 public:
   static bool insertFisch(const QString &path, const QString &name,
-                          const qint64 angelplatz, const int laenge,
+                          const QString &angelplatz, const int laenge,
                           const int gewicht, const QDateTime &zeit,
                           const int temperatur, const int windgeschwindigkeit,
-                          const int luftdruck, const QString &isNacht,
-                          const QString &niederschlag, const QString &info);
+                          const int luftdruck, const bool isNacht,
+                          const int niederschlag, const QString &info);
 
   static int getRowCount();
 
@@ -22,27 +23,31 @@ public:
 
   static Fisch *readFisch(qint64 key);
 
+  static QString readFischAngelplatz(qint64 key);
+
   static QVector<Fisch *> readFische();
 
-  static QSqlTableModel *readFischeIntoTableModel();
+  static FischeSqlTableModel *
+  readFischeIntoTableModel(const QStringList &listNacht,
+                           const QStringList &listNiederschlag);
 
   static bool updateFisch(const qint64 key, const QString &path,
-                          const QString &name, const qint64 angelplatz,
+                          const QString &name, const QString &angelplatz,
                           const int laenge, const int gewicht,
                           const QDateTime &zeit, const int temperatur,
                           const int windgeschwindigkeit, const int luftdruck,
-                          const QString &isNacht, const QString &niederschlag,
+                          const bool isNacht, const int niederschlag,
                           const QString &info);
 
   static bool deleteFisch(const qint64 key);
 
   static QStringList readFischarten();
 
-  static QVariant getMinParameter(QString column);
-  static QVariant getMaxParameter(QString column);
+  static QVariant getMinParameter(const QString &column);
+  static QVariant getMaxParameter(const QString &column);
 
-  static bool deleteFischeInAngelplatz(qint64 key);
-  static int countFischeInAngelplatz(qint64 key);
+  static bool deleteFischeInAngelplatz(const QString &angelplatz);
+  static int countFischeInAngelplatz(const QString &angelplatz);
 
   static int countColumns();
 

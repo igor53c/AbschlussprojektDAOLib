@@ -3,26 +3,26 @@
 FischeDAO::FischeDAO() {}
 
 bool FischeDAO::insertFisch(const QString &path, const QString &name,
-                            const qint64 angelplatz, const int laenge,
+                            const QString &angelplatz, const int laenge,
                             const int gewicht, const QDateTime &zeit,
                             const int temperatur, const int windgeschwindigkeit,
-                            const int luftdruck, const QString &isNacht,
-                            const QString &niederschlag, const QString &info) {
+                            const int luftdruck, const bool isNacht,
+                            const int niederschlag, const QString &info) {
   QString SQL = "INSERT INTO FISCHE ";
   SQL += "(PATH, NAME, ANGELPLATZ, LAENGE, GEWICHT, ZEIT, TEMPERATUR, "
          "WINDGESCHWINDIGKEIT, ";
   SQL += " LUFTDRUCK, IS_NACHT, NIEDERSCHLAG, INFO) VALUES (";
   SQL += DAOLib::dbString(path) + ", ";
   SQL += DAOLib::dbString(name) + ", ";
-  SQL += QString::number(angelplatz) + ", ";
+  SQL += DAOLib::dbString(angelplatz) + ", ";
   SQL += QString::number(laenge) + ", ";
   SQL += QString::number(gewicht) + ", ";
   SQL += DAOLib::dbString(zeit.toString("yyyy-MM-dd hh:mm:ss")) + ", ";
   SQL += QString::number(temperatur) + ", ";
   SQL += QString::number(windgeschwindigkeit) + ", ";
   SQL += QString::number(luftdruck) + ", ";
-  SQL += DAOLib::dbString(isNacht) + ", ";
-  SQL += DAOLib::dbString(niederschlag) + ", ";
+  SQL += QString::number(isNacht) + ", ";
+  SQL += QString::number(niederschlag) + ", ";
   SQL += DAOLib::dbString(info) + ")";
 
   return DAOLib::executeNonQuery(SQL) > 0;
@@ -74,15 +74,15 @@ QVector<Fisch *> FischeDAO::readFische() {
     fisch->setPrimaryKey(query->value("PRIMARYKEY").toLongLong());
     fisch->setPath(query->value("PATH").toString());
     fisch->setName(query->value("NAME").toString());
-    fisch->setAngelplatz(query->value("ANGELPLATZ").toLongLong());
+    fisch->setAngelplatz(query->value("ANGELPLATZ").toString());
     fisch->setLaenge(query->value("LAENGE").toInt());
     fisch->setGewicht(query->value("GEWICHT").toInt());
     fisch->setZeit(query->value("ZEIT").toDateTime());
     fisch->setTemperatur(query->value("TEMPERATUR").toInt());
     fisch->setWindgeschwindigkeit(query->value("WINDGESCHWINDIGKEIT").toInt());
     fisch->setLuftdruck(query->value("LUFTDRUCK").toInt());
-    fisch->setIsNacht(query->value("IS_NACHT").toString());
-    fisch->setNiederschlag(query->value("NIEDERSCHLAG").toString());
+    fisch->setIsNacht(query->value("IS_NACHT").toBool());
+    fisch->setNiederschlag(query->value("NIEDERSCHLAG").toInt());
     fisch->setInfo(query->value("INFO").toString());
 
     retValue.push_back(fisch);
@@ -95,10 +95,15 @@ QVector<Fisch *> FischeDAO::readFische() {
   return retValue;
 }
 
-QSqlTableModel *FischeDAO::readFischeIntoTableModel() {
+FischeSqlTableModel *
+FischeDAO::readFischeIntoTableModel(const QStringList &listNacht,
+                                    const QStringList &listNiederschlag) {
 
-  QSqlTableModel *tableModel =
-      new QSqlTableModel(nullptr, DAOLib::getDatabaseConnection());
+  FischeSqlTableModel *tableModel =
+      new FischeSqlTableModel(nullptr, DAOLib::getDatabaseConnection());
+
+  tableModel->setNachtText(listNacht);
+  tableModel->setNiederschlagText(listNiederschlag);
 
   tableModel->setTable("Fische");
 
@@ -141,15 +146,15 @@ Fisch *FischeDAO::readFisch(qint64 key) {
   fisch->setPrimaryKey(query->value("PRIMARYKEY").toLongLong());
   fisch->setPath(query->value("PATH").toString());
   fisch->setName(query->value("NAME").toString());
-  fisch->setAngelplatz(query->value("ANGELPLATZ").toLongLong());
+  fisch->setAngelplatz(query->value("ANGELPLATZ").toString());
   fisch->setLaenge(query->value("LAENGE").toInt());
   fisch->setGewicht(query->value("GEWICHT").toInt());
   fisch->setZeit(query->value("ZEIT").toDateTime());
   fisch->setTemperatur(query->value("TEMPERATUR").toInt());
   fisch->setWindgeschwindigkeit(query->value("WINDGESCHWINDIGKEIT").toInt());
   fisch->setLuftdruck(query->value("LUFTDRUCK").toInt());
-  fisch->setIsNacht(query->value("IS_NACHT").toString());
-  fisch->setNiederschlag(query->value("NIEDERSCHLAG").toString());
+  fisch->setIsNacht(query->value("IS_NACHT").toBool());
+  fisch->setNiederschlag(query->value("NIEDERSCHLAG").toInt());
   fisch->setInfo(query->value("INFO").toString());
 
   // Nachdem alle Daten aus der Query übernommen wurden,
@@ -159,18 +164,29 @@ Fisch *FischeDAO::readFisch(qint64 key) {
   return fisch;
 }
 
+QString FischeDAO::readFischAngelplatz(qint64 key) {
+  QString SQL = "SELECT ANGELPLATZ FROM FISCHE ";
+  SQL += "WHERE PRIMARYKEY = " + QString::number(key);
+
+  bool OK;
+
+  QVariant angelplatz = DAOLib::executeScalar(SQL, OK);
+
+  return OK ? angelplatz.toString() : QString();
+}
+
 bool FischeDAO::updateFisch(const qint64 key, const QString &path,
-                            const QString &name, const qint64 angelplatz,
+                            const QString &name, const QString &angelplatz,
                             const int laenge, const int gewicht,
                             const QDateTime &zeit, const int temperatur,
                             const int windgeschwindigkeit, const int luftdruck,
-                            const QString &isNacht, const QString &niederschlag,
+                            const bool isNacht, const int niederschlag,
                             const QString &info) {
 
   QString SQL = "UPDATE FISCHE ";
   SQL += "SET PATH = " + DAOLib::dbString(path) + ", ";
   SQL += "NAME = " + DAOLib::dbString(name) + ", ";
-  SQL += "ANGELPLATZ = " + QString::number(angelplatz) + ", ";
+  SQL += "ANGELPLATZ = " + DAOLib::dbString(angelplatz) + ", ";
   SQL += "LAENGE = " + QString::number(laenge) + ", ";
   SQL += "GEWICHT = " + QString::number(gewicht) + ", ";
   SQL +=
@@ -178,8 +194,8 @@ bool FischeDAO::updateFisch(const qint64 key, const QString &path,
   SQL += "TEMPERATUR = " + QString::number(temperatur) + ", ";
   SQL += "WINDGESCHWINDIGKEIT = " + QString::number(windgeschwindigkeit) + ", ";
   SQL += "LUFTDRUCK = " + QString::number(luftdruck) + ", ";
-  SQL += "IS_NACHT = " + DAOLib::dbString(isNacht) + ", ";
-  SQL += "NIEDERSCHLAG = " + DAOLib::dbString(niederschlag) + ", ";
+  SQL += "IS_NACHT = " + QString::number(isNacht) + ", ";
+  SQL += "NIEDERSCHLAG = " + QString::number(niederschlag) + ", ";
   SQL += "INFO = " + DAOLib::dbString(info);
   SQL += " WHERE PRIMARYKEY = " + QString::number(key);
 
@@ -197,8 +213,8 @@ QStringList FischeDAO::readFischarten() {
 
   QStringList retValue;
 
-  if(getRowCount() < 1)
-      return retValue;
+  if (getRowCount() < 1)
+    return retValue;
 
   QString SQL = "SELECT DISTINCT NAME FROM FISCHE ORDER BY NAME";
 
@@ -229,7 +245,7 @@ QStringList FischeDAO::readFischarten() {
   return retValue;
 }
 
-QVariant FischeDAO::getMinParameter(QString column) {
+QVariant FischeDAO::getMinParameter(const QString &column) {
 
   QString SQL = "SELECT MIN(" + column + ") FROM FISCHE";
 
@@ -240,7 +256,7 @@ QVariant FischeDAO::getMinParameter(QString column) {
   return OK ? value : 0;
 }
 
-QVariant FischeDAO::getMaxParameter(QString column) {
+QVariant FischeDAO::getMaxParameter(const QString &column) {
 
   QString SQL = "SELECT MAX(" + column + ") FROM FISCHE";
 
@@ -251,18 +267,18 @@ QVariant FischeDAO::getMaxParameter(QString column) {
   return OK ? value : 0;
 }
 
-bool FischeDAO::deleteFischeInAngelplatz(qint64 key) {
+bool FischeDAO::deleteFischeInAngelplatz(const QString &angelplatz) {
 
   QString SQL = "DELETE FROM FISCHE ";
-  SQL += "WHERE ANGELPLATZ = " + QString::number(key);
+  SQL += "WHERE ANGELPLATZ = " + DAOLib::dbString(angelplatz);
 
   return DAOLib::executeNonQuery(SQL) > 0;
 }
 
-int FischeDAO::countFischeInAngelplatz(qint64 key) {
+int FischeDAO::countFischeInAngelplatz(const QString &angelplatz) {
 
   QString SQL = "SELECT COUNT(*) FROM FISCHE ";
-  SQL += "WHERE ANGELPLATZ = " + QString::number(key);
+  SQL += "WHERE ANGELPLATZ = " + DAOLib::dbString(angelplatz);
 
   bool OK;
 
@@ -271,14 +287,13 @@ int FischeDAO::countFischeInAngelplatz(qint64 key) {
   return OK ? count.toInt() : 0;
 }
 
-int FischeDAO::countColumns()
-{
-    QString SQL = "SELECT COUNT (COLUMN_NAME) AS NUMBER FROM ";
-    SQL += "INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='FISCHE'";
+int FischeDAO::countColumns() {
+  QString SQL = "SELECT COUNT (COLUMN_NAME) AS NUMBER FROM ";
+  SQL += "INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='FISCHE'";
 
-    bool OK;
+  bool OK;
 
-    QVariant count = DAOLib::executeScalar(SQL, OK);
+  QVariant count = DAOLib::executeScalar(SQL, OK);
 
-    return OK ? count.toInt() : 0;
+  return OK ? count.toInt() : 0;
 }

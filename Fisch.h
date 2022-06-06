@@ -21,8 +21,8 @@ public:
   void setName(const QString &value) override;
   QString getName() const override;
 
-  void setAngelplatz(const qint64 value) override;
-  qint64 getAngelplatz() const override;
+  void setAngelplatz(const QString &value) override;
+  QString getAngelplatz() const override;
 
   void setLaenge(const int value) override;
   int getLaenge() const override;
@@ -42,11 +42,11 @@ public:
   void setLuftdruck(const int value) override;
   int getLuftdruck() const override;
 
-  void setIsNacht(const QString& value) override;
-  QString getIsNacht() const override;
+  void setIsNacht(const bool value) override;
+  bool getIsNacht() const override;
 
-  void setNiederschlag(const QString &value) override;
-  QString getNiederschlag() const override;
+  void setNiederschlag(const int value) override;
+  int getNiederschlag() const override;
 
   void setInfo(const QString &value) override;
   QString getInfo() const override;
@@ -55,14 +55,14 @@ private:
   qint64 primaryKey;
   QString path;
   QString name;
-  qint64 angelplatz;
+  QString angelplatz;
   int laenge;
   int gewicht;
   QDateTime zeit;
   int temperatur;
   int windgeschwindigkeit;
   int luftdruck;
-  QString isNacht;
-  QString niederschlag;
+  bool isNacht;
+  int niederschlag;
   QString info;
 };
