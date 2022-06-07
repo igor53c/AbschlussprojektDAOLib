@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QSqlTableModel>
-#include <QVector>
 
 #include "Angelplatz.h"
 #include "DAOLib.h"

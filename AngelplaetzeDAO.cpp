@@ -89,8 +89,8 @@ Angelplatz *AngelplaetzeDAO::readAngelplatz(const qint64 key) {
   Angelplatz *angelplatz = nullptr;
 
   QString SQL =
-      "SELECT PRIMARYKEY, PATH, NAME, TYPE, FISCHE, PLZ, ORT, LAND, INFO "
-      "FROM ANGELPLAETZE ";
+      "SELECT PRIMARYKEY, PATH, NAME, TYPE, FISCHE, PLZ, ORT, LAND, INFO ";
+  SQL += "FROM ANGELPLAETZE ";
   SQL += "WHERE PRIMARYKEY = " + QString::number(key);
 
   bool OK;

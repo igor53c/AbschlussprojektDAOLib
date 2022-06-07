@@ -198,9 +198,13 @@ QStringList FischeDAO::readFischarten() {
   return retValue;
 }
 
-QVariant FischeDAO::getMinParameter(const QString &column) {
+QVariant FischeDAO::getMinParameter(const QString &column,
+                                    const QString &angelplatz) {
 
   QString SQL = "SELECT MIN(" + column + ") FROM FISCHE";
+
+  if (!angelplatz.isEmpty())
+    SQL += " WHERE ANGELPLATZ = " + DAOLib::dbString(angelplatz);
 
   bool OK;
 
@@ -209,9 +213,13 @@ QVariant FischeDAO::getMinParameter(const QString &column) {
   return OK ? value : 0;
 }
 
-QVariant FischeDAO::getMaxParameter(const QString &column) {
+QVariant FischeDAO::getMaxParameter(const QString &column,
+                                    const QString &angelplatz) {
 
   QString SQL = "SELECT MAX(" + column + ") FROM FISCHE";
+
+  if (!angelplatz.isEmpty())
+    SQL += " WHERE ANGELPLATZ = " + DAOLib::dbString(angelplatz);
 
   bool OK;
 

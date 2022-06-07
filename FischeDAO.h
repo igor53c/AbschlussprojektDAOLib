@@ -42,17 +42,22 @@ public:
 
   static QStringList readFischarten();
 
-  static QVariant getMinParameter(const QString &column);
-  static QVariant getMaxParameter(const QString &column);
+  static QVariant getMinParameter(const QString &column,
+                                  const QString &angelplatz);
+
+  static QVariant getMaxParameter(const QString &column,
+                                  const QString &angelplatz);
 
   static bool deleteFischeInAngelplatz(const QString &angelplatz);
+
   static int countFischeInAngelplatz(const QString &angelplatz);
 
   static int countColumns();
 
   static bool fischExists(const qint64 key);
 
-  static bool updateFischeWithAngelplatz(const QString &oldValue, const QString &newValue);
+  static bool updateFischeWithAngelplatz(const QString &oldValue,
+                                         const QString &newValue);
 
 private:
   FischeDAO();
