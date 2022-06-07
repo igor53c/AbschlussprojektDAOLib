@@ -49,10 +49,11 @@ void FischeDAO::deleteTable() {
 
 FischeSqlTableModel *
 FischeDAO::readFischeIntoTableModel(const QStringList &listNacht,
-                                    const QStringList &listNiederschlag) {
+                                    const QStringList &listNiederschlag,
+                                    QWidget *parent) {
 
   FischeSqlTableModel *tableModel =
-      new FischeSqlTableModel(nullptr, DAOLib::getDatabaseConnection());
+      new FischeSqlTableModel(parent, DAOLib::getDatabaseConnection());
 
   tableModel->setNachtText(listNacht);
   tableModel->setNiederschlagText(listNiederschlag);
@@ -240,6 +241,7 @@ int FischeDAO::countFischeInAngelplatz(const QString &angelplatz) {
 }
 
 int FischeDAO::countColumns() {
+
   QString SQL = "SELECT COUNT (COLUMN_NAME) AS NUMBER FROM ";
   SQL += "INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='FISCHE'";
 
@@ -248,4 +250,26 @@ int FischeDAO::countColumns() {
   QVariant count = DAOLib::executeScalar(SQL, OK);
 
   return OK ? count.toInt() : 0;
+}
+
+bool FischeDAO::fischExists(const qint64 key) {
+
+  QString SQL = "SELECT COUNT(*) FROM FISCHE ";
+  SQL += "WHERE PRIMARYKEY = " + QString::number(key);
+
+  bool OK;
+
+  QVariant count = DAOLib::executeScalar(SQL, OK);
+
+  return OK ? count.toInt() > 0 : false;
+}
+
+bool FischeDAO::updateFischeWithAngelplatz(const QString &oldValue,
+                                           const QString &newValue) {
+
+  QString SQL = "UPDATE FISCHE ";
+  SQL += "SET ANGELPLATZ = " + DAOLib::dbString(newValue);
+  SQL += " WHERE ANGELPLATZ = " + DAOLib::dbString(oldValue);
+
+  return DAOLib::executeNonQuery(SQL) > 0;
 }

@@ -23,10 +23,23 @@ bool AngelplaetzeDAO::insertAngelplatz(const QString &path, const QString &name,
   return DAOLib::executeNonQuery(SQL) > 0;
 }
 
-bool AngelplaetzeDAO::angelplatzExists(const QString &name) {
+bool AngelplaetzeDAO::angelplatzExistsWithName(const QString &name,
+                                               const qint64 key) {
 
   QString SQL = "SELECT COUNT(*) FROM ANGELPLAETZE ";
   SQL += "WHERE NAME = " + DAOLib::dbString(name);
+  SQL += " AND NOT PRIMARYKEY = " + QString::number(key);
+
+  bool OK;
+
+  QVariant count = DAOLib::executeScalar(SQL, OK);
+
+  return OK ? count.toInt() > 0 : false;
+}
+
+bool AngelplaetzeDAO::angelplatzExists(const qint64 key) {
+  QString SQL = "SELECT COUNT(*) FROM ANGELPLAETZE ";
+  SQL += "WHERE PRIMARYKEY = " + QString::number(key);
 
   bool OK;
 
@@ -53,10 +66,11 @@ void AngelplaetzeDAO::deleteTable() {
   DAOLib::executeNonQuery(SQL);
 }
 
-QSqlTableModel *AngelplaetzeDAO::readAngelplaetzeIntoTableModel() {
+QSqlTableModel *
+AngelplaetzeDAO::readAngelplaetzeIntoTableModel(QWidget *parent) {
 
   QSqlTableModel *tableModel =
-      new QSqlTableModel(nullptr, DAOLib::getDatabaseConnection());
+      new QSqlTableModel(parent, DAOLib::getDatabaseConnection());
 
   tableModel->setTable("Angelplaetze");
 

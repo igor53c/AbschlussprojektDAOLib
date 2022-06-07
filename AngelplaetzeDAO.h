@@ -13,7 +13,9 @@ public:
                                const QString &plz, const QString &ort,
                                const QString &land, const QString &info);
 
-  static bool angelplatzExists(const QString &name);
+  static bool angelplatzExistsWithName(const QString &name, const qint64 key);
+
+  static bool angelplatzExists(const qint64 key);
 
   static int getRowCount();
 
@@ -27,7 +29,8 @@ public:
 
   static QString readAngelplatzPath(const QString &name);
 
-  static QSqlTableModel *readAngelplaetzeIntoTableModel();
+  static QSqlTableModel *
+  readAngelplaetzeIntoTableModel(QWidget *parent = nullptr);
 
   static bool updateAngelplatz(const qint64 key, const QString &path,
                                const QString &name, const QString &type,

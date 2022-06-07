@@ -27,7 +27,8 @@ public:
 
   static FischeSqlTableModel *
   readFischeIntoTableModel(const QStringList &listNacht,
-                           const QStringList &listNiederschlag);
+                           const QStringList &listNiederschlag,
+                           QWidget *parent = nullptr);
 
   static bool updateFisch(const qint64 key, const QString &path,
                           const QString &name, const QString &angelplatz,
@@ -48,6 +49,10 @@ public:
   static int countFischeInAngelplatz(const QString &angelplatz);
 
   static int countColumns();
+
+  static bool fischExists(const qint64 key);
+
+  static bool updateFischeWithAngelplatz(const QString &oldValue, const QString &newValue);
 
 private:
   FischeDAO();
