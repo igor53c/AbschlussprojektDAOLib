@@ -25,7 +25,8 @@ bool AngelplaetzeDAO::insertAngelplatz(const QString &path, const QString &name,
 
 bool AngelplaetzeDAO::angelplatzExistsWithName(const QString &name,
                                                const qint64 key) {
-
+  // Ob es einen Angelplatz mit diesem Namen gibt,
+  // aber nicht mit dem Primärschlüssel
   QString SQL = "SELECT COUNT(*) FROM ANGELPLAETZE ";
   SQL += "WHERE NAME = " + DAOLib::dbString(name);
   SQL += " AND NOT PRIMARYKEY = " + QString::number(key);
@@ -38,6 +39,7 @@ bool AngelplaetzeDAO::angelplatzExistsWithName(const QString &name,
 }
 
 bool AngelplaetzeDAO::angelplatzExists(const qint64 key) {
+
   QString SQL = "SELECT COUNT(*) FROM ANGELPLAETZE ";
   SQL += "WHERE PRIMARYKEY = " + QString::number(key);
 
@@ -66,18 +68,16 @@ void AngelplaetzeDAO::deleteTable() {
   DAOLib::executeNonQuery(SQL);
 }
 
-QSqlTableModel *
+AngelplatzSqlTableModel *
 AngelplaetzeDAO::readAngelplaetzeIntoTableModel(QWidget *parent) {
-
-  QSqlTableModel *tableModel =
-      new QSqlTableModel(parent, DAOLib::getDatabaseConnection());
+  // Verwenden eigenes QSqlTableModel
+  AngelplatzSqlTableModel *tableModel =
+      new AngelplatzSqlTableModel(parent, DAOLib::getDatabaseConnection());
 
   tableModel->setTable("Angelplaetze");
-
   // Änderungen der Tabelle werden nur vom Programm mit submitAll() oder
   // revertAll() durchgeführt
   tableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
-
   // Alle Datensätze der Tabelle in das SqlTableModel einlesen
   tableModel->select();
 
@@ -101,24 +101,20 @@ Angelplatz *AngelplaetzeDAO::readAngelplatz(const qint64 key) {
 
     return angelplatz;
   }
-
   // Auf den ersten Datensatz setzen (Zugriff mit Primärschlüssel)
   query->first();
-
-  // Erstellen des Objekts Postleitzahl
+  // Erstellen des Objekts Angelplatz
   angelplatz = new Angelplatz();
-
   // Setzen der Werte
-  angelplatz->setPrimaryKey(query->value("PRIMARYKEY").toLongLong());
-  angelplatz->setPath(query->value("PATH").toString());
-  angelplatz->setName(query->value("NAME").toString());
-  angelplatz->setType(query->value("TYPE").toString());
-  angelplatz->setFische(query->value("FISCHE").toInt());
-  angelplatz->setPlz(query->value("PLZ").toString());
-  angelplatz->setOrt(query->value("ORT").toString());
-  angelplatz->setLand(query->value("LAND").toString());
-  angelplatz->setInfo(query->value("INFO").toString());
-
+  angelplatz->setPrimaryKey(query->value(Cnt::PRIMARYKEY).toLongLong());
+  angelplatz->setPath(query->value(Cnt::PATH).toString());
+  angelplatz->setName(query->value(Cnt::NAME).toString());
+  angelplatz->setType(query->value(Cnt::TYPE).toString());
+  angelplatz->setFische(query->value(Cnt::FISCHE).toInt());
+  angelplatz->setPlz(query->value(Cnt::PLZ).toString());
+  angelplatz->setOrt(query->value(Cnt::ORT).toString());
+  angelplatz->setLand(query->value(Cnt::LAND).toString());
+  angelplatz->setInfo(query->value(Cnt::INFO).toString());
   // Nachdem alle Daten aus der Query übernommen wurden,
   // das Objekt vom Heap löschen
   delete query;
@@ -130,7 +126,7 @@ QString AngelplaetzeDAO::readAngelplatzName(const qint64 key) {
 
   if (key < 1)
     return QString();
-
+  // Nur Werte aus Spalte NAME nehmen
   QString SQL = "SELECT NAME FROM ANGELPLAETZE ";
   SQL += "WHERE PRIMARYKEY = " + QString::number(key);
 
@@ -142,7 +138,7 @@ QString AngelplaetzeDAO::readAngelplatzName(const qint64 key) {
 }
 
 qint64 AngelplaetzeDAO::readAngelplatzKey(const QString &name) {
-
+  // Nur Werte aus Spalte PRIMARYKEY nehmen
   QString SQL = "SELECT PRIMARYKEY FROM ANGELPLAETZE ";
   SQL += "WHERE NAME = " + DAOLib::dbString(name);
 
@@ -154,7 +150,7 @@ qint64 AngelplaetzeDAO::readAngelplatzKey(const QString &name) {
 }
 
 QString AngelplaetzeDAO::readAngelplatzPath(const QString &name) {
-
+  // Nur Werte aus Spalte PATH nehmen
   QString SQL = "SELECT PATH FROM ANGELPLAETZE ";
   SQL += "WHERE NAME = " + DAOLib::dbString(name);
 
@@ -194,7 +190,7 @@ bool AngelplaetzeDAO::deleteAngelplatz(const qint64 key) {
 }
 
 bool AngelplaetzeDAO::changeNumberFische(const QString &name, const int value) {
-
+  // Ändern den Wert in der Spalte FISCHE
   QString SQL = "UPDATE ANGELPLAETZE ";
   SQL += "SET FISCHE = FISCHE + " + QString::number(value);
   SQL += " WHERE NAME = " + DAOLib::dbString(name);
@@ -203,7 +199,7 @@ bool AngelplaetzeDAO::changeNumberFische(const QString &name, const int value) {
 }
 
 int AngelplaetzeDAO::countColumns() {
-
+  // Die Gesamtzahl der Spalten in der Tabelle ANGELPLAETZE
   QString SQL = "SELECT COUNT (COLUMN_NAME) AS NUMBER FROM ";
   SQL += "INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='ANGELPLAETZE'";
 

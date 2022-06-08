@@ -3,6 +3,7 @@
 #include <QSqlTableModel>
 
 #include "Angelplatz.h"
+#include "AngelplatzSqlTableModel.h"
 #include "DAOLib.h"
 
 class DAOLIB_EXPORT AngelplaetzeDAO {
@@ -11,7 +12,8 @@ public:
                                const QString &type, const int fische,
                                const QString &plz, const QString &ort,
                                const QString &land, const QString &info);
-
+  // Ob es einen Angelplatz mit diesem Namen gibt,
+  // aber nicht mit dem Primärschlüssel
   static bool angelplatzExistsWithName(const QString &name, const qint64 key);
 
   static bool angelplatzExists(const qint64 key);
@@ -28,7 +30,7 @@ public:
 
   static QString readAngelplatzPath(const QString &name);
 
-  static QSqlTableModel *
+  static AngelplatzSqlTableModel *
   readAngelplaetzeIntoTableModel(QWidget *parent = nullptr);
 
   static bool updateAngelplatz(const qint64 key, const QString &path,
@@ -38,9 +40,9 @@ public:
                                const QString &info);
 
   static bool deleteAngelplatz(const qint64 key);
-
+  // Ändern den Wert in der Spalte FISCHE
   static bool changeNumberFische(const QString &name, const int value);
-
+  // Die Gesamtzahl der Spalten in der Tabelle
   static int countColumns();
 
 private:

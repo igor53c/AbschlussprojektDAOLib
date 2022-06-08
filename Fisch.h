@@ -9,9 +9,10 @@
 class DAOLIB_EXPORT Fisch : public DAOObjectFisch {
 public:
   Fisch();
-
+  // Wenn die Klasse von der abstrakten Klasse DBObjectPostleitzahl abgeleitet
+  // wird, verlangt Qt die Deklaration eines virtuellen Destruktors.
   virtual ~Fisch();
-
+  // Überschriebene Getter- und Setter-Methoden
   void setPrimaryKey(const qint64 value) override;
   qint64 getPrimaryKey() const override;
 

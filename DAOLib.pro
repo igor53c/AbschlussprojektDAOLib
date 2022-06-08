@@ -14,6 +14,7 @@ CONFIG += c++17
 SOURCES += \
     AngelplaetzeDAO.cpp \
     Angelplatz.cpp \
+    AngelplatzSqlTableModel.cpp \
     DAOLib.cpp \
     DAOObjectFisch.cpp \
     DBObjectAngelplatz.cpp \
@@ -24,6 +25,8 @@ SOURCES += \
 HEADERS += \
     AngelplaetzeDAO.h \
     Angelplatz.h \
+    AngelplatzSqlTableModel.h \
+    Constants.h \
     DAOLib_global.h \
     DAOLib.h \
     DAOObjectFisch.h \

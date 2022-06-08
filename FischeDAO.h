@@ -60,5 +60,8 @@ public:
                                          const QString &newValue);
 
 private:
+  // Privater Konstruktor.
+  // Verhindert das Erstellen dieser Klasse.
+  // Alle Methoden sind statisch.
   FischeDAO();
 };

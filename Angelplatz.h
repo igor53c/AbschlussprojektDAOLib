@@ -8,9 +8,10 @@
 class DAOLIB_EXPORT Angelplatz : public DBObjectAngelplatz {
 public:
   Angelplatz();
-
+  // Wenn die Klasse von der abstrakten Klasse DBObjectPostleitzahl abgeleitet
+  // wird, verlangt Qt die Deklaration eines virtuellen Destruktors.
   virtual ~Angelplatz();
-
+  // Überschriebene Getter- und Setter-Methoden
   void setPrimaryKey(const qint64 value) override;
   qint64 getPrimaryKey() const override;
 
