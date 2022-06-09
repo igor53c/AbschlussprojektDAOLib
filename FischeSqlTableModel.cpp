@@ -23,7 +23,7 @@ QVariant FischeSqlTableModel::data(const QModelIndex &index, int role) const {
   if (role == Qt::BackgroundRole)
     return QBrush(StyleBackground::colorBackground());
 
-  return QSqlTableModel::data(index, role);
+  return value;
 }
 
 QVariant FischeSqlTableModel::headerData(int section,

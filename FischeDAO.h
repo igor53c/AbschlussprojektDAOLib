@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QDateTime>
-#include <QDebug>
 #include <QSqlTableModel>
 
 #include "DAOLib.h"
