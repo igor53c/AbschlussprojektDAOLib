@@ -244,18 +244,6 @@ int FischeDAO::countFischeInAngelplatz(const QString &angelplatz) {
   return OK ? count.toInt() : 0;
 }
 
-int FischeDAO::countColumns() {
-  // Die Gesamtzahl der Spalten in der Tabelle FISCHE
-  QString SQL = "SELECT COUNT (COLUMN_NAME) AS NUMBER FROM ";
-  SQL += "INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='FISCHE'";
-
-  bool OK;
-
-  QVariant count = DAOLib::executeScalar(SQL, OK);
-
-  return OK ? count.toInt() : 0;
-}
-
 bool FischeDAO::fischExists(const qint64 key) {
 
   QString SQL = "SELECT COUNT(*) FROM FISCHE ";

@@ -52,7 +52,12 @@ inline constexpr int MAIN_HEADER_HEIGHT = 50;
 inline constexpr int ANGELPLATZ_COL_WIDTH = 100;
 inline constexpr int ANGELPLATZ_HEADER_HEIGHT = 50;
 // Die Farbe der markierten Zeile in der Tabelle
-inline constexpr QColor COLOR_HIGHLIGHT = QColor(0, 112, 255);
+inline constexpr QColor COLOR_HIGHLIGHT_BLACK = QColor(0, 0, 0);
+inline constexpr QColor COLOR_HIGHLIGHT_YELLOW = QColor(200, 200, 0);
+inline constexpr QColor COLOR_HIGHLIGHT_GRAY = QColor(100, 100, 100);
+inline constexpr QColor COLOR_HIGHLIGHT_GREEN = QColor(34, 177, 76);
+inline constexpr QColor COLOR_HIGHLIGHT_RED = QColor(255, 0, 0);
+inline constexpr QColor COLOR_HIGHLIGHT_BLUE = QColor(0, 0, 255);
 inline constexpr QColor COLOR_WHITE = QColor(255, 255, 255);
 inline constexpr QColor COLOR_YELLOW = QColor(255, 255, 210);
 inline constexpr QColor COLOR_GRAY = QColor(245, 245, 245);
@@ -61,6 +66,9 @@ inline constexpr QColor COLOR_RED = QColor(255, 230, 230);
 inline constexpr QColor COLOR_BLUE = QColor(230, 230, 255);
 inline const QList<QColor> COLOR_BACKGROUND{
     COLOR_WHITE, COLOR_YELLOW, COLOR_GRAY, COLOR_GREEN, COLOR_RED, COLOR_BLUE};
+inline const QList<QColor> COLOR_HIGHLIGHT{
+    COLOR_HIGHLIGHT_BLACK, COLOR_HIGHLIGHT_YELLOW, COLOR_HIGHLIGHT_GRAY,
+    COLOR_HIGHLIGHT_GREEN, COLOR_HIGHLIGHT_RED,    COLOR_HIGHLIGHT_BLUE};
 // Spaltennamen in der Fische-Tabellendatenbank
 inline const QString PRIMARYKEY = "PRIMARYKEY";
 inline const QString PATH = "PATH";
@@ -90,6 +98,7 @@ inline const QString DATABASE_NAME = "alfatraining";
 inline const QString APP_NAME = "Angeltagebuch";
 inline const QString SUFFIX = "_";
 inline const QString EN = "en";
+inline const QString SRB = "hr";
 inline const QString QTBASE_ = "qtbase_";
 inline const QString QTBASE_DE = "qtbase_de";
 // Daten für XML-Datei

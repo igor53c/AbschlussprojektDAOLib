@@ -42,8 +42,6 @@ public:
   static bool deleteAngelplatz(const qint64 key);
   // Ändern den Wert in der Spalte FISCHE
   static bool changeNumberFische(const QString &name, const int value);
-  // Die Gesamtzahl der Spalten in der Tabelle
-  static int countColumns();
 
 private:
   AngelplaetzeDAO();

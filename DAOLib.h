@@ -28,12 +28,6 @@ public:
   static QSqlQuery *executeQuery(const QString &SQL, bool &OK);
 
   static QString dbString(QString value);
-  // Hintergrundfarbe der Anwendung
-  static QColor colorBackground();
-
-  static void setColor(const int col);
-
-  static int getColor();
 
 private:
   // Privater Konstruktor.
@@ -44,6 +38,4 @@ private:
   static QSqlDatabase dbConn;
   static QString serverName;
   static QString dbName;
-
-  static int color;
 };

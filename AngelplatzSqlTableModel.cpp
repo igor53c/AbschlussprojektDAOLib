@@ -13,7 +13,7 @@ QVariant AngelplatzSqlTableModel::data(const QModelIndex &index,
     return Qt::AlignCenter;
   // Ändern die Hintergrundfarbe nur für Felder
   if (role == Qt::BackgroundRole)
-      return QBrush(DAOLib::colorBackground());
+      return QBrush(StyleBackground::colorBackground());
 
   return QSqlTableModel::data(index, role);
 }

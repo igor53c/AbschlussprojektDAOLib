@@ -5,7 +5,7 @@
 #include <QSqlTableModel>
 
 #include "Constants.h"
-#include "DAOLib.h"
+#include "StyleBackground.h"
 // Verwenden eigenes QSqlTableModel
 class FischeSqlTableModel : public QSqlTableModel {
 public:

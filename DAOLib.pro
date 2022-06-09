@@ -20,7 +20,8 @@ SOURCES += \
     DBObjectAngelplatz.cpp \
     Fisch.cpp \
     FischeDAO.cpp \
-    FischeSqlTableModel.cpp
+    FischeSqlTableModel.cpp \
+    StyleBackground.cpp
 
 HEADERS += \
     AngelplaetzeDAO.h \
@@ -33,7 +34,8 @@ HEADERS += \
     DBObjectAngelplatz.h \
     Fisch.h \
     FischeDAO.h \
-    FischeSqlTableModel.h
+    FischeSqlTableModel.h \
+    StyleBackground.h
 
 # Default rules for deployment.
 unix {

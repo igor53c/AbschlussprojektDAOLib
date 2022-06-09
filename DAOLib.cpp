@@ -4,8 +4,6 @@ QSqlDatabase DAOLib::dbConn = QSqlDatabase();
 QString DAOLib::serverName = QString();
 QString DAOLib::dbName = QString();
 
-int DAOLib::color = 0;
-
 DAOLib::DAOLib() {}
 
 bool DAOLib::connectToDatabase(const QString &driver, const QString driverName,
@@ -107,9 +105,3 @@ QString DAOLib::dbString(QString value) {
 
   return "'" + value.replace("'", "''") + "'";
 }
-
-QColor DAOLib::colorBackground() { return Cnt::COLOR_BACKGROUND[color]; }
-
-void DAOLib::setColor(const int col) { color = col; }
-
-int DAOLib::getColor() { return color; }

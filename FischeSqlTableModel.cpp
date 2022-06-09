@@ -21,7 +21,7 @@ QVariant FischeSqlTableModel::data(const QModelIndex &index, int role) const {
     return Qt::AlignCenter;
   // Ändern Sie die Hintergrundfarbe nur für Felder
   if (role == Qt::BackgroundRole)
-    return QBrush(DAOLib::colorBackground());
+    return QBrush(StyleBackground::colorBackground());
 
   return QSqlTableModel::data(index, role);
 }
